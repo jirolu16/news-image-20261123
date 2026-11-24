@@ -1,61 +1,66 @@
-// Entry point for the news-image-20261123 submission.
+// main.ts -- delivery step for the news-image-20261123 entry.
 //
-// The graded artifact in this competition is the PNG that sits next to
-// this file. The runner executes this program in a clean container where
-// the repository is mounted read-only and the only writable place is the
-// output directory: MAKEFUN_OUTPUT_DIR when that variable is set, and
-// /output otherwise. So the whole job here is to deliver the image into
-// that directory under the name entry.png, byte for byte. The runner
-// executes the program twice, which means the delivery has to be
-// idempotent: same input, same output, no state carried between runs.
+// The picture itself already exists as entry.png in this folder; it was
+// rendered beforehand by draw.py from the stories collected in news.md.
+// What the grader needs from this program is simpler: place a copy of
+// that PNG in the output folder, under the same name, byte for byte.
+// The output folder is named by the MAKEFUN_OUTPUT_DIR environment
+// variable and falls back to /output when the variable is unset or
+// empty. The grader runs the program twice in a row, so the copy is
+// made the same way every time and a second run just overwrites the
+// first run's file with identical bytes.
 
 import { copyFileSync, mkdirSync, statSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
-const IMAGE_NAME = 'entry.png';
+const FILE_NAME = 'entry.png';
+const FALLBACK_OUTPUT_DIR = '/output';
 
-// The source image lives beside this module. Resolving it relative to
-// import.meta.url keeps the program independent of whatever working
-// directory the runner happens to start it from.
-function sourceImagePath() {
-  const moduleDir = dirname(fileURLToPath(import.meta.url));
-  return join(moduleDir, IMAGE_NAME);
+// The PNG travels with this script, so anchor its path to the script's
+// own location instead of the caller's working directory.
+function bundledImagePath(): string {
+  const scriptDir = dirname(fileURLToPath(import.meta.url));
+  return join(scriptDir, FILE_NAME);
 }
 
-function destinationImagePath() {
-  const outputDir = process.env.MAKEFUN_OUTPUT_DIR || '/output';
-  return join(outputDir, IMAGE_NAME);
+function targetImagePath(): string {
+  const fromEnv = process.env.MAKEFUN_OUTPUT_DIR;
+  const dir = fromEnv && fromEnv.trim() !== '' ? fromEnv : FALLBACK_OUTPUT_DIR;
+  return join(dir, FILE_NAME);
 }
 
-function publishImage() {
-  const from = sourceImagePath();
-  const to = destinationImagePath();
-  // The documented local test flow points MAKEFUN_OUTPUT_DIR at a folder
-  // that may not exist yet, so create the destination directory first.
-  mkdirSync(dirname(to), { recursive: true });
-  copyFileSync(from, to);
-  return { from, to };
+function deliverImage(): { source: string; target: string } {
+  const source = bundledImagePath();
+  const target = targetImagePath();
+  // The output folder is not guaranteed to exist yet (a local test can
+  // point the variable at a fresh path), so create it before copying.
+  mkdirSync(dirname(target), { recursive: true });
+  copyFileSync(source, target);
+  return { source, target };
 }
 
-// The judge grades exactly the bytes that land in the output directory,
-// so a copy that silently came out short would score a different image
-// than the one drawn. Compare the delivered size against the source and
-// refuse to report success when they disagree.
-function verifyDelivery(from, to) {
-  const expected = statSync(from).size;
-  const actual = statSync(to).size;
-  if (actual !== expected) {
-    throw new Error(`delivered image is ${actual} bytes, source is ${expected} bytes`);
+// A copy that silently came out short would hand the judge a different
+// picture than the one that was drawn, so before calling the run a
+// success, confirm the delivered file is exactly as long as the
+// bundled original.
+function confirmDelivered(source: string, target: string): number {
+  const sourceSize = statSync(source).size;
+  const targetSize = statSync(target).size;
+  if (targetSize !== sourceSize) {
+    throw new Error(
+      `copy is ${targetSize} bytes but the original is ${sourceSize} bytes`,
+    );
   }
-  return actual;
+  return targetSize;
 }
 
 try {
-  const { from, to } = publishImage();
-  const size = verifyDelivery(from, to);
-  console.log(`entry image delivered to ${to} (${size} bytes, verified)`);
-} catch (error) {
-  console.error(`failed to deliver entry image: ${error.message}`);
+  const { source, target } = deliverImage();
+  const bytes = confirmDelivered(source, target);
+  console.log(`entry.png copied to ${target} (${bytes} bytes, size checked)`);
+} catch (err) {
+  const message = err instanceof Error ? err.message : String(err);
+  console.error(`could not deliver entry.png: ${message}`);
   process.exit(1);
 }

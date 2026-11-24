@@ -1,56 +1,59 @@
-"""Render the one-page newspaper for Monday 23 November 2026.
+"""Draw the front page that entry.png holds.
 
-Entry for the make.fun bounty "news-image-20261123": sum up one day of
-world news in a single image. Everything on the page is drawn with PIL
--- no photographs, no downloaded art, no network -- so the picture
-stands alone for a judge who sees nothing else. The stories were
-researched and cross-checked on the day; see news.md for the sources.
+The picture is a single square newspaper page summing up Monday
+23 November 2026 for the make.fun contest news-image-20261123. PIL
+does all the drawing: there are no photographs, no image assets and
+no network involved, so the page has to speak for itself to a judge
+who is shown nothing else. The reporting behind each item, and the
+outlets it was checked in, live in news.md.
 
-Layout, top to bottom:
-  masthead   "THE WORLD IN ONE DAY" with the Monday date line
-  lead       Ukraine's sea drones sink a Russian corvette at Benghazi
-  panels     NATO's emergency session; the Democrats' House majority;
-             the market bounce; Seoul's first woman spy-chief nominee
-  wide       Prabowo hands two VP candidates to the MPR in Jakarta
-  briefs     a dark "ALSO THAT DAY" strip with four one-line stories
+Reading the page from the top:
 
-Running this file writes entry.png next to itself.
+  * a masthead, THE WORLD IN ONE DAY, with the date picked out in red
+  * the lead block: Ukraine's naval drones sink a Russian corvette in
+    the harbour at Benghazi, with a small harbour scene drawn into it
+  * four panels: the NATO emergency session, the Democrats' House
+    majority, the futures bounce, and Seoul's spy-chief nomination
+  * one wide panel: Prabowo delivers two VP names to the MPR
+  * a black strip of four one-line briefs headed ALSO THAT DAY
+
+Executing this file rewrites entry.png in its own directory.
 """
 
 import os
 
 from PIL import Image, ImageDraw, ImageFont
 
-# ---------------------------------------------------------------- page
-PAGE = 1024            # square page, PAGE x PAGE pixels
-MARGIN = 32            # white border around the printed area
-PAPER = (246, 241, 230)
-CARD = (255, 253, 246)
-LEAD_TINT = (238, 229, 208)
+# --- the sheet -------------------------------------------------------
+SIDE = 1024                      # the page is SIDE by SIDE pixels
+EDGE = 32                        # margin of bare paper round the print
+PAPER = (246, 241, 230)          # warm off-white page
+PANEL_BG = (255, 253, 246)       # slightly paler card stock
+LEAD_BG = (238, 229, 208)        # tinted block behind the lead story
 
-# ----------------------------------------------------------------- ink
-BLACK = (26, 24, 20)
-BODY_INK = (50, 46, 40)
-GREY = (94, 88, 78)
-CARD_EDGE = (118, 110, 94)
-RED = (148, 38, 28)
-STRIP_INK = (224, 218, 202)      # pale text on the black briefs strip
+# --- inks ------------------------------------------------------------
+INK = (26, 24, 20)               # headlines and rules
+TEXT = (50, 46, 40)              # ordinary body copy
+FADED = (94, 88, 78)             # the quiet line above the masthead
+BORDER = (118, 110, 94)          # card outlines
+ACCENT = (148, 38, 28)           # red: date, kickers, the lead deck
+STRIP_TEXT = (224, 218, 202)     # pale lettering on the black strip
 
-# ------------------------------------------------------- lead motif band
-SEA = (24, 44, 58)               # deep harbour water at dusk
-WAVE = (96, 138, 158)
-SHIP = (188, 178, 158)           # pale silhouette of the corvette
-SHIP_DARK = (140, 130, 108)
-DRONE = (226, 216, 192)          # the small sea drones
-WAKE = (150, 178, 196)
+# --- colours for the harbour vignette in the lead block --------------
+HARBOUR = (24, 44, 58)           # dusk water
+RIPPLE = (96, 138, 158)          # wavelets catching the light
+WARSHIP = (188, 178, 158)        # the corvette's pale silhouette
+WARSHIP_SHADE = (140, 130, 108)  # its darker bridge block
+DRONE_HULL = (226, 216, 192)     # the little unmanned boats
+DRONE_WAKE = (150, 178, 196)     # the wake trailing each one
 
-# ------------------------------------------------------------- content
-DATE_LINE = "MONDAY 23 NOVEMBER 2026"
+# --- what the page says ----------------------------------------------
+DATE_TEXT = "MONDAY 23 NOVEMBER 2026"
 
-LEAD_KICKER = "BENGHAZI · LIBYA"
-LEAD_HEADLINE = "UKRAINE SINKS RUSSIAN CORVETTE IN LIBYA"
-LEAD_DECK = "Sea drones strike a warship 1,500 miles from the front"
-LEAD_BODY = (
+LEAD_PLACE = "BENGHAZI · LIBYA"
+LEAD_TITLE = "UKRAINE SINKS RUSSIAN CORVETTE IN LIBYA"
+LEAD_STANDFIRST = "Sea drones strike a warship 1,500 miles from the front"
+LEAD_TEXT = (
     "President Zelenskyy confirmed on Monday that seven Ukrainian "
     "naval drones sank the Russian corvette Merkury and hit a Russian "
     "cargo ship in the port of Benghazi, Ukraine's longest-range naval "
@@ -90,9 +93,9 @@ PANELS = [
     ),
 ]
 
-WIDE_KICKER = "JAKARTA · INDONESIA"
-WIDE_HEADLINE = "Prabowo hands two VP names to the MPR"
-WIDE_BODY = (
+WIDE_PLACE = "JAKARTA · INDONESIA"
+WIDE_TITLE = "Prabowo hands two VP names to the MPR"
+WIDE_TEXT = (
     "President Prabowo Subianto went to parliament in Jakarta on "
     "Monday to hand the MPR two vice-presidential candidates, Andi "
     "Amran Sulaiman and Sugiono. The assembly votes on 11 December."
@@ -109,221 +112,224 @@ BRIEFS = [
     "safety audit of every factory",
 ]
 
-# --------------------------------------------------------------- fonts
-NOTO_DIR = "/usr/share/fonts/truetype/noto"
-DEJAVU_DIR = "/usr/share/fonts/truetype/dejavu"
+# --- type ------------------------------------------------------------
+NOTO = "/usr/share/fonts/truetype/noto"
+DEJAVU = "/usr/share/fonts/truetype/dejavu"
 
 
-def _face(noto_name, dejavu_name):
-    """Path of the preferred Noto face, or its DejaVu stand-in."""
-    path = os.path.join(NOTO_DIR, noto_name)
-    if os.path.isfile(path):
-        return path
-    return os.path.join(DEJAVU_DIR, dejavu_name)
+def font_file(noto_name, dejavu_name):
+    """Prefer the Noto face; fall back to the DejaVu twin."""
+    candidate = os.path.join(NOTO, noto_name)
+    if os.path.isfile(candidate):
+        return candidate
+    return os.path.join(DEJAVU, dejavu_name)
 
 
-SERIF_BLACK = _face("NotoSerif-Black.ttf", "DejaVuSerif-Bold.ttf")
-SERIF_BOLD = _face("NotoSerif-Bold.ttf", "DejaVuSerif-Bold.ttf")
-SANS_BOLD = _face("NotoSans-Bold.ttf", "DejaVuSans-Bold.ttf")
-SANS = _face("NotoSans-Regular.ttf", "DejaVuSans.ttf")
+SERIF_HEAVY = font_file("NotoSerif-Black.ttf", "DejaVuSerif-Bold.ttf")
+SERIF = font_file("NotoSerif-Bold.ttf", "DejaVuSerif-Bold.ttf")
+SANS_HEAVY = font_file("NotoSans-Bold.ttf", "DejaVuSans-Bold.ttf")
+SANS_PLAIN = font_file("NotoSans-Regular.ttf", "DejaVuSans.ttf")
 
 
-def font(path, size):
+def load(path, size):
     return ImageFont.truetype(path, size)
 
 
-def text_width(draw, text, fnt):
+def measure(draw, text, fnt):
+    """Pixel width of `text` in `fnt`, from its bounding box."""
     box = draw.textbbox((0, 0), text, font=fnt)
     return box[2] - box[0]
 
 
-def fit_font(draw, text, path, size, floor, max_width):
-    """Shrink from `size` towards `floor` until the text fits."""
-    while size > floor and text_width(draw, text, font(path, size)) > max_width:
+def shrink_to_fit(draw, text, path, size, smallest, width):
+    """Step the size down by twos until the text fits `width`."""
+    while size > smallest and measure(draw, text, load(path, size)) > width:
         size -= 2
-    return font(path, size)
+    return load(path, size)
 
 
-def wrap(draw, text, fnt, max_width):
-    """Greedy word wrap, measured in pixels against the real font."""
-    lines = []
-    current = ""
+def wrap_words(draw, text, fnt, width):
+    """Greedy wrapping: fill each line until the next word overflows."""
+    done = []
+    line = ""
     for word in text.split():
-        trial = (current + " " + word).strip()
-        if text_width(draw, trial, fnt) <= max_width or not current:
-            current = trial
+        attempt = (line + " " + word).strip()
+        if measure(draw, attempt, fnt) <= width or not line:
+            line = attempt
         else:
-            lines.append(current)
-            current = word
-    if current:
-        lines.append(current)
-    return lines
+            done.append(line)
+            line = word
+    if line:
+        done.append(line)
+    return done
 
 
-def draw_wrapped(draw, x, y, text, fnt, colour, max_width, leading):
-    """Draw wrapped text from (x, y); return y below the last line."""
-    for line in wrap(draw, text, fnt, max_width):
+def paint_block(draw, x, y, text, fnt, colour, width, leading):
+    """Paint `text` wrapped at (x, y); hand back the y underneath it."""
+    for line in wrap_words(draw, text, fnt, width):
         draw.text((x, y), line, font=fnt, fill=colour)
         y += leading
     return y
 
 
-def draw_centred(draw, cx, y, text, fnt, colour):
-    draw.text((cx - text_width(draw, text, fnt) / 2, y), text,
+def paint_centred(draw, centre_x, y, text, fnt, colour):
+    """Paint `text` so that its middle lands on `centre_x`."""
+    draw.text((centre_x - measure(draw, text, fnt) / 2, y), text,
               font=fnt, fill=colour)
 
 
-# ------------------------------------------------------------- drawing
-def masthead(draw):
-    """Newspaper name, tagline and the red date line."""
-    content_w = PAGE - 2 * MARGIN
-    draw_centred(draw, PAGE / 2, 20,
-                 "ONE PAGE  ·  ONE DAY  ·  THE WHOLE WORLD",
-                 font(SANS_BOLD, 17), GREY)
-    draw.line([(MARGIN, 44), (PAGE - MARGIN, 44)], fill=BLACK, width=2)
+# --- the pieces of the page ------------------------------------------
+def paint_masthead(draw):
+    """Paper name, the line above it, and the date in red."""
+    usable = SIDE - 2 * EDGE
+    paint_centred(draw, SIDE / 2, 20,
+                  "ONE PAGE  ·  ONE DAY  ·  THE WHOLE WORLD",
+                  load(SANS_HEAVY, 17), FADED)
+    draw.line([(EDGE, 44), (SIDE - EDGE, 44)], fill=INK, width=2)
     name = "THE WORLD IN ONE DAY"
-    draw_centred(draw, PAGE / 2, 50, name,
-                 fit_font(draw, name, SERIF_BLACK, 54, 30, content_w),
-                 BLACK)
-    draw_centred(draw, PAGE / 2, 106, DATE_LINE,
-                 fit_font(draw, DATE_LINE, SERIF_BLACK, 30, 20, content_w),
-                 RED)
-    draw.line([(MARGIN, 142), (PAGE - MARGIN, 142)], fill=BLACK, width=4)
-    draw.line([(MARGIN, 149), (PAGE - MARGIN, 149)], fill=BLACK, width=1)
+    paint_centred(draw, SIDE / 2, 50, name,
+                  shrink_to_fit(draw, name, SERIF_HEAVY, 54, 30, usable),
+                  INK)
+    paint_centred(draw, SIDE / 2, 106, DATE_TEXT,
+                  shrink_to_fit(draw, DATE_TEXT, SERIF_HEAVY, 30, 20,
+                                usable),
+                  ACCENT)
+    draw.line([(EDGE, 142), (SIDE - EDGE, 142)], fill=INK, width=4)
+    draw.line([(EDGE, 149), (SIDE - EDGE, 149)], fill=INK, width=1)
 
 
-def sea_motif(draw, x0, y0, x1, y1):
-    """Harbour water, one corvette, three sea drones closing in.
+def paint_harbour(draw, x0, y0, x1, y1):
+    """The lead story's little scene: dusk water, a warship, drones.
 
-    The story is a night strike far from home: a pale warship sits low
-    on the right while three small unmanned boats run at it from the
-    left, each trailing a thin wake.
+    The corvette rides low at the right of the band. Three unmanned
+    boats hurry at it from the left, each dragging a short pale wake:
+    a strike that came a very long way from home, in miniature.
     """
-    draw.rectangle([x0, y0, x1, y1], fill=SEA)
-    water_y = y1 - 8
-    # wavelets across the band
+    draw.rectangle([x0, y0, x1, y1], fill=HARBOUR)
+    surface = y1 - 8
+    # rows of small arcs for wavelets, staggered down the band
     for i, wx in enumerate(range(x0 + 14, x1 - 30, 46)):
         wy = y0 + 8 + (i % 3) * 5
-        draw.arc([wx, wy, wx + 22, wy + 8], 180, 360, fill=WAVE, width=2)
-    # the corvette: hull, deckhouse, mast, sitting low on the right
+        draw.arc([wx, wy, wx + 22, wy + 8], 180, 360, fill=RIPPLE, width=2)
+    # hull first, then the deckhouse, bridge and mast on top of it
     sx = x1 - 250
-    draw.polygon([(sx, water_y), (sx + 26, water_y - 13),
-                  (sx + 196, water_y - 13), (sx + 214, water_y)],
-                 fill=SHIP)
-    draw.rectangle([sx + 62, water_y - 24, sx + 128, water_y - 13],
-                   fill=SHIP)
-    draw.rectangle([sx + 84, water_y - 31, sx + 108, water_y - 24],
-                   fill=SHIP_DARK)
-    draw.line([(sx + 150, water_y - 13), (sx + 150, water_y - 30)],
-              fill=SHIP, width=3)
-    draw.line([(sx + 150, water_y - 30), (sx + 168, water_y - 25)],
-              fill=SHIP, width=2)
-    # three sea drones running in from the left, wakes behind them
-    for i, (dx, dy) in enumerate([(x0 + 30, water_y - 6),
-                                  (x0 + 96, water_y - 13),
-                                  (x0 + 168, water_y - 4)]):
-        draw.line([(dx - 26, dy + 3), (dx - 4, dy + 2)], fill=WAKE,
+    draw.polygon([(sx, surface), (sx + 26, surface - 13),
+                  (sx + 196, surface - 13), (sx + 214, surface)],
+                 fill=WARSHIP)
+    draw.rectangle([sx + 62, surface - 24, sx + 128, surface - 13],
+                   fill=WARSHIP)
+    draw.rectangle([sx + 84, surface - 31, sx + 108, surface - 24],
+                   fill=WARSHIP_SHADE)
+    draw.line([(sx + 150, surface - 13), (sx + 150, surface - 30)],
+              fill=WARSHIP, width=3)
+    draw.line([(sx + 150, surface - 30), (sx + 168, surface - 25)],
+              fill=WARSHIP, width=2)
+    # the three attackers, each drawn wake-first so the hull overlaps it
+    for dx, dy in [(x0 + 30, surface - 6),
+                   (x0 + 96, surface - 13),
+                   (x0 + 168, surface - 4)]:
+        draw.line([(dx - 26, dy + 3), (dx - 4, dy + 2)], fill=DRONE_WAKE,
                   width=2)
         draw.polygon([(dx, dy + 3), (dx + 6, dy - 3), (dx + 30, dy - 3),
-                      (dx + 38, dy + 3)], fill=DRONE)
-        draw.rectangle([dx + 14, dy - 7, dx + 22, dy - 3], fill=DRONE)
+                      (dx + 38, dy + 3)], fill=DRONE_HULL)
+        draw.rectangle([dx + 14, dy - 7, dx + 22, dy - 3], fill=DRONE_HULL)
 
 
-def lead_story(draw):
-    """The tinted lead block: kicker, headline, deck, body, motif."""
+def paint_lead(draw):
+    """The tinted block at the top: place, title, standfirst, story."""
     top, bottom = 157, 404
-    inner_w = PAGE - 2 * MARGIN - 32
-    draw.rectangle([MARGIN, top, PAGE - MARGIN, bottom],
-                   fill=LEAD_TINT, outline=BLACK, width=2)
-    draw.text((MARGIN + 16, top + 10), LEAD_KICKER,
-              font=font(SANS_BOLD, 17), fill=RED)
+    inner = SIDE - 2 * EDGE - 32
+    draw.rectangle([EDGE, top, SIDE - EDGE, bottom],
+                   fill=LEAD_BG, outline=INK, width=2)
+    draw.text((EDGE + 16, top + 10), LEAD_PLACE,
+              font=load(SANS_HEAVY, 17), fill=ACCENT)
     y = top + 36
-    y = draw_wrapped(draw, MARGIN + 16, y, LEAD_HEADLINE,
-                     fit_font(draw, LEAD_HEADLINE, SERIF_BLACK, 47, 30,
-                              inner_w),
-                     BLACK, inner_w, 54)
-    y = draw_wrapped(draw, MARGIN + 16, y + 2, LEAD_DECK,
-                     font(SERIF_BOLD, 21), RED, inner_w, 26)
-    y = draw_wrapped(draw, MARGIN + 16, y + 6, LEAD_BODY,
-                     font(SANS, 18), BODY_INK, inner_w, 23)
-    band_top = bottom - 46
-    assert y <= band_top - 6, f"lead text reaches motif: {y} > {band_top}"
-    sea_motif(draw, MARGIN + 2, band_top, PAGE - MARGIN - 2, bottom - 2)
+    y = paint_block(draw, EDGE + 16, y, LEAD_TITLE,
+                    shrink_to_fit(draw, LEAD_TITLE, SERIF_HEAVY, 47, 30,
+                                  inner),
+                    INK, inner, 54)
+    y = paint_block(draw, EDGE + 16, y + 2, LEAD_STANDFIRST,
+                    load(SERIF, 21), ACCENT, inner, 26)
+    y = paint_block(draw, EDGE + 16, y + 6, LEAD_TEXT,
+                    load(SANS_PLAIN, 18), TEXT, inner, 23)
+    scene_top = bottom - 46
+    assert y <= scene_top - 6, f"lead copy crowds the scene: {y}"
+    paint_harbour(draw, EDGE + 2, scene_top, SIDE - EDGE - 2, bottom - 2)
 
 
-def story_card(draw, box, kicker, headline, body):
-    """One bordered panel; the assert keeps every word on the page."""
+def paint_panel(draw, box, place, title, body):
+    """One of the four middle cards; the assert guards its bottom edge."""
     x0, y0, x1, y1 = box
-    draw.rectangle(box, fill=CARD, outline=CARD_EDGE, width=2)
-    inset = 14
-    inner_w = (x1 - x0) - 2 * inset
+    draw.rectangle(box, fill=PANEL_BG, outline=BORDER, width=2)
+    pad = 14
+    inner = (x1 - x0) - 2 * pad
     y = y0 + 8
-    draw.text((x0 + inset, y), kicker, font=font(SANS_BOLD, 15), fill=RED)
+    draw.text((x0 + pad, y), place, font=load(SANS_HEAVY, 15), fill=ACCENT)
     y += 21
-    y = draw_wrapped(draw, x0 + inset, y, headline,
-                     font(SERIF_BOLD, 23), BLACK, inner_w, 27)
-    y = draw_wrapped(draw, x0 + inset, y + 3, body,
-                     font(SANS, 17), BODY_INK, inner_w, 21)
-    assert y <= y1 - 6, f"panel overflow: '{headline}' ends {y}, box {y1}"
+    y = paint_block(draw, x0 + pad, y, title,
+                    load(SERIF, 23), INK, inner, 27)
+    y = paint_block(draw, x0 + pad, y + 3, body,
+                    load(SANS_PLAIN, 17), TEXT, inner, 21)
+    assert y <= y1 - 6, f"panel '{title}' spills: ends {y}, box ends {y1}"
 
 
-def wide_panel(draw):
-    """Full-width card for the Jakarta vice-president story."""
+def paint_wide(draw):
+    """The full-width Jakarta card, sitting above the briefs strip."""
     top, bottom = 796, 904
-    inner_w = PAGE - 2 * MARGIN - 28
-    draw.rectangle([MARGIN, top, PAGE - MARGIN, bottom],
-                   fill=CARD, outline=CARD_EDGE, width=2)
-    draw.text((MARGIN + 14, top + 8), WIDE_KICKER,
-              font=font(SANS_BOLD, 15), fill=RED)
-    y = draw_wrapped(draw, MARGIN + 14, top + 27, WIDE_HEADLINE,
-                     font(SERIF_BOLD, 24), BLACK, inner_w, 28)
-    y = draw_wrapped(draw, MARGIN + 14, y + 3, WIDE_BODY,
-                     font(SANS, 17), BODY_INK, inner_w, 21)
-    assert y <= bottom - 6, f"wide panel overflow: {y} > {bottom}"
+    inner = SIDE - 2 * EDGE - 28
+    draw.rectangle([EDGE, top, SIDE - EDGE, bottom],
+                   fill=PANEL_BG, outline=BORDER, width=2)
+    draw.text((EDGE + 14, top + 8), WIDE_PLACE,
+              font=load(SANS_HEAVY, 15), fill=ACCENT)
+    y = paint_block(draw, EDGE + 14, top + 27, WIDE_TITLE,
+                    load(SERIF, 24), INK, inner, 28)
+    y = paint_block(draw, EDGE + 14, y + 3, WIDE_TEXT,
+                    load(SANS_PLAIN, 17), TEXT, inner, 21)
+    assert y <= bottom - 6, f"wide panel spills: {y} past {bottom}"
 
 
-def briefs_strip(draw):
-    """The black ALSO THAT DAY strip: four briefs in four columns."""
+def paint_briefs(draw):
+    """The black strip along the foot: four briefs in four columns."""
     top, bottom = 912, 1008
-    draw.rectangle([MARGIN, top, PAGE - MARGIN, bottom],
-                   fill=BLACK, outline=BLACK, width=2)
-    draw.text((MARGIN + 14, top + 7), "ALSO THAT DAY",
-              font=font(SANS_BOLD, 18), fill=PAPER)
-    col_w = (PAGE - 2 * MARGIN - 28 - 24) // 4
+    draw.rectangle([EDGE, top, SIDE - EDGE, bottom],
+                   fill=INK, outline=INK, width=2)
+    draw.text((EDGE + 14, top + 7), "ALSO THAT DAY",
+              font=load(SANS_HEAVY, 18), fill=PAPER)
+    column = (SIDE - 2 * EDGE - 28 - 24) // 4
     for i, brief in enumerate(BRIEFS):
-        bx = MARGIN + 14 + i * (col_w + 8)
-        end = draw_wrapped(draw, bx, top + 31, "·  " + brief,
-                           font(SANS, 14), STRIP_INK, col_w, 17)
-        assert end <= bottom - 4, f"brief {i} overflow: {end} > {bottom}"
+        bx = EDGE + 14 + i * (column + 8)
+        end = paint_block(draw, bx, top + 31, "·  " + brief,
+                          load(SANS_PLAIN, 14), STRIP_TEXT, column, 17)
+        assert end <= bottom - 4, f"brief {i} spills: {end} past {bottom}"
 
 
-def build():
-    """Assemble the whole front page and return the PIL image."""
-    img = Image.new("RGB", (PAGE, PAGE), PAPER)
+def render_page():
+    """Paint every piece onto a fresh sheet and return the image."""
+    img = Image.new("RGB", (SIDE, SIDE), PAPER)
     draw = ImageDraw.Draw(img)
-    draw.rectangle([14, 14, PAGE - 14, PAGE - 14], outline=BLACK, width=3)
+    draw.rectangle([14, 14, SIDE - 14, SIDE - 14], outline=INK, width=3)
 
-    masthead(draw)
-    lead_story(draw)
+    paint_masthead(draw)
+    paint_lead(draw)
 
-    col_w = (PAGE - 2 * MARGIN - 12) // 2
-    left = (MARGIN, MARGIN + col_w)
-    right = (MARGIN + col_w + 12, PAGE - MARGIN)
-    rows = [(412, 596), (604, 788)]
-    for i, (kicker, headline, body) in enumerate(PANELS):
-        x0, x1 = left if i % 2 == 0 else right
-        y0, y1 = rows[i // 2]
-        story_card(draw, (x0, y0, x1, y1), kicker, headline, body)
+    col = (SIDE - 2 * EDGE - 12) // 2
+    left_col = (EDGE, EDGE + col)
+    right_col = (EDGE + col + 12, SIDE - EDGE)
+    row_bands = [(412, 596), (604, 788)]
+    for i, (place, title, body) in enumerate(PANELS):
+        x0, x1 = left_col if i % 2 == 0 else right_col
+        y0, y1 = row_bands[i // 2]
+        paint_panel(draw, (x0, y0, x1, y1), place, title, body)
 
-    wide_panel(draw)
-    briefs_strip(draw)
+    paint_wide(draw)
+    paint_briefs(draw)
     return img
 
 
 def main():
-    here = os.path.dirname(os.path.abspath(__file__))
-    target = os.path.join(here, "entry.png")
-    img = build()
+    folder = os.path.dirname(os.path.abspath(__file__))
+    target = os.path.join(folder, "entry.png")
+    img = render_page()
     img.save(target, format="PNG", optimize=True)
     print(f"wrote {target} size={os.path.getsize(target)} "
           f"dims={img.size}")

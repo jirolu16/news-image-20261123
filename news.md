@@ -1,88 +1,109 @@
-# News of Monday 23 November 2026 — chosen stories
+# What happened on Monday 23 November 2026: the stories on the page
 
-Every story below happened, or was first reported, on Monday 23 November
-2026 (in at least one time zone), and each was cross-checked in at least
-two independent sources before being drawn onto the page.
+This file is the research record behind entry.png. Every item drawn on
+the front page either happened on Monday 23 November 2026, or was first
+reported that day, in at least one time zone somewhere in the world.
+Nothing was drawn on the strength of one report: each story below was
+found in two or more independent sources first, and the sources are
+named so the checking can be repeated.
 
-## LEAD — Benghazi, Libya: Ukraine sinks a Russian corvette
+## Lead story: a Russian corvette sunk at Benghazi
 
-President Volodymyr Zelenskyy said on Monday that seven Ukrainian naval
-drones sank the Russian corvette Merkury and hit a Russian cargo ship at
-the port of Benghazi, Libya, about 1,500 miles from the front lines —
-Ukraine's longest-range naval strike of the war, confirmed by Kyiv on
-Monday and accused by the Kremlin of "terrorist activity".
-Sources: AP (via Now Habersham, 23 Nov 2026); BBC News (23 Nov 2026);
-NBC News (23 Nov 2026); The Guardian (23 Nov 2026); Reuters (23 Nov 2026).
+The day's biggest story came out of Libya. On the Monday, President
+Volodymyr Zelenskyy stated that seven naval drones operated by Ukraine
+had sunk the Russian corvette Merkury in the port of Benghazi and had
+also struck a Russian cargo ship there. Benghazi sits some 1,500 miles
+from the fighting in Ukraine, which makes the attack the longest-range
+naval operation Kyiv has mounted in the war. Moscow's response was to
+brand the strike an act of terrorism.
+Checked against: AP, carried by Now Habersham on 23 Nov 2026; BBC News,
+23 Nov 2026; NBC News, 23 Nov 2026; The Guardian, 23 Nov 2026; Reuters,
+23 Nov 2026.
 
-## Panel 1 — Brussels: NATO emergency session over Poland
+## Panel: NATO meets in emergency session over Poland
 
-NATO's North Atlantic Council met in emergency session in Brussels on
-Monday after three Russian Kh-101 cruise missiles came down in Poland
-during Friday's mass attack on Ukraine. Poland pressed allies for
-stronger air defences on the eastern flank; nobody was hurt in Poland
-and Warsaw did not invoke Article 4.
-Sources: NPR Up First briefing (23 Nov 2026); The American Legion,
-"Five Things to Know, Nov. 23, 2026"; RMF24 reporting (via EuropeSays).
+In Brussels, the North Atlantic Council convened an emergency session
+on the Monday. The cause was Friday's mass Russian attack on Ukraine,
+during which three Kh-101 cruise missiles came down on Polish soil.
+Poland used the session to push its allies for a stronger air defence
+posture along the eastern flank. No one in Poland was injured, and
+Warsaw stopped short of invoking Article 4.
+Checked against: the NPR Up First briefing of 23 Nov 2026; The American
+Legion's "Five Things to Know, Nov. 23, 2026"; RMF24 reporting carried
+by EuropeSays.
 
-## Panel 2 — Washington: Democrats clinch a historic House majority
+## Panel: Democrats take a House majority not seen since 1992
 
-US House Democrats secured at least 258 seats as the last midterm
-results were confirmed, their largest House majority since 1992, and
-began preparing oversight of the Trump administration for January.
-Sources: AP, Jill Colvin (23 Nov 2026, via Now Habersham); AP Morning
-Wire, 23 Nov 2026.
+The last of the US midterm results were confirmed on the Monday and
+left the Democrats holding at least 258 seats in the House of
+Representatives, the largest majority the party has held there since
+1992. The incoming majority began setting up its oversight of the
+Trump administration ahead of January.
+Checked against: AP reporting by Jill Colvin, 23 Nov 2026, carried by
+Now Habersham; the AP Morning Wire of 23 Nov 2026.
 
-## Panel 3 — New York: markets bounce after the AI rout
+## Panel: futures recover ground after the AI sell-off
 
-US stock futures rose about 2% early on Monday after a brutal AI
-sell-off gave the Nasdaq its worst week since March 2020; the S&P 500
-remains more than 10% below its 6 October record high.
-Sources: Reuters (via Yahoo Finance and The Star, 23 Nov 2026);
-AP (via KSAT, 23 Nov 2026).
+Early trading on the Monday brought some relief to markets: US stock
+futures climbed roughly 2% after a punishing sell-off in AI shares had
+given the Nasdaq its worst week since March 2020. Even after the
+bounce, the S&P 500 sat more than 10% beneath the record high it set
+on 6 October.
+Checked against: Reuters, 23 Nov 2026, carried by Yahoo Finance and by
+The Star; AP, 23 Nov 2026, carried by KSAT.
 
-## Panel 4 — Seoul: first woman picked to run the spy agency
+## Panel: Seoul names a woman to head its spy service for the first time
 
-President Lee Jae Myung unveiled a surprise cabinet reshuffle on
-Monday, nominating former justice minister Kang Kum-sil as director of
-the National Intelligence Service — set to become South Korea's first
-female spy chief — alongside new foreign and unification ministers.
-Sources: Reuters, Seoul, 23 Nov 2026; Korea JoongAng Daily (23 Nov
-2026); Yonhap (via Cumhuriyet Daily, 23 Nov 2026).
+President Lee Jae Myung used the Monday to announce a cabinet reshuffle
+nobody had forecast. Its headline appointment was Kang Kum-sil, a
+former justice minister, nominated to direct the National Intelligence
+Service; on confirmation she becomes the first woman to run South
+Korea's spy agency. New foreign and unification ministers were named
+in the same reshuffle.
+Checked against: Reuters from Seoul, 23 Nov 2026; the Korea JoongAng
+Daily, 23 Nov 2026; Yonhap, carried by Cumhuriyet Daily, 23 Nov 2026.
 
-## Wide panel — Jakarta, Indonesia: Prabowo hands VP names to the MPR
+## Wide panel: Prabowo brings two VP candidates to the MPR
 
-President Prabowo Subianto came to the parliament complex in Senayan,
-Jakarta, on Monday afternoon to hand the MPR (People's Consultative
-Assembly) two vice-presidential candidates, Andi Amran Sulaiman and
-Sugiono. The MPR plenary session on the appointment is scheduled for
-11 December 2026.
-Sources: Batavia News (23 Nov 2026); RI News (rinews.id, 23 Nov 2026).
+Indonesia's item earned the full-width panel. On Monday afternoon
+President Prabowo Subianto attended the parliament complex at Senayan
+in Jakarta in person to deliver two names to the People's Consultative
+Assembly (MPR) as candidates for the vice-presidency: Andi Amran
+Sulaiman and Sugiono. The MPR's plenary vote on the appointment is set
+for 11 December 2026.
+Checked against: Batavia News, 23 Nov 2026; RI News (rinews.id),
+23 Nov 2026.
 
-## Briefs (ALSO THAT DAY)
+## The briefs strip: four more stories in one line each
 
-1. Iran vows to use "all available means" against the US naval
-   blockade of its oil exports, now in its 130th day.
-   Sources: Inshorts (Monday 23 Nov 2026); Standard Topic world
-   archive (23 Nov 2026).
-2. Jakarta stocks rebound as MSCI signals it may not downgrade
-   Indonesia after all; the IHSG index rose 1.59% in Monday's first
-   session.
-   Sources: IDXChannel (via RCTI+, 23 Nov 2026); Kontan data (via
-   TradingView, 23 Nov 2026); Bloomberg News (23 Nov 2026).
-3. Carlos Alcaraz beats world No. 1 Alexander Zverev 6-2, 7-6 in
-   Turin to win his first ATP Finals title (the final ended after
-   midnight Jakarta time, 23 Nov; reported worldwide 23 Nov).
-   Sources: ATP Tour; SABC Sport; BusinessWorld (23 Nov 2026).
-4. Cikande follow-up: after the candy-factory fire, the Regent of
-   Serang orders a work-safety (K3) audit of every factory in the
-   regency.
-   Sources: RI News (rinews.id, 23 Nov 2026).
+1. Iran's answer to the American naval blockade of its oil exports,
+   which has now run for 130 days, was a promise to respond with "all
+   available means".
+   Checked against: Inshorts, Monday 23 Nov 2026; the Standard Topic
+   world archive, 23 Nov 2026.
+2. Indonesian shares rebounded after MSCI indicated it might not
+   downgrade the country after all; the IHSG index gained 1.59% across
+   Monday's first session.
+   Checked against: IDXChannel via RCTI+, 23 Nov 2026; Kontan figures
+   via TradingView, 23 Nov 2026; Bloomberg News, 23 Nov 2026.
+3. In Turin, Carlos Alcaraz defeated the world No. 1, Alexander Zverev,
+   in straight sets, 6-2, 7-6, to collect his first ATP Finals title.
+   The final finished after midnight in Jakarta, which puts it on
+   23 Nov there, and it was reported around the world that day.
+   Checked against: ATP Tour; SABC Sport; BusinessWorld, 23 Nov 2026.
+4. The Cikande story moved on: following the candy-factory fire, the
+   Regent of Serang ordered a work-safety (K3) audit covering every
+   factory in the regency.
+   Checked against: RI News (rinews.id), 23 Nov 2026.
 
-## Deliberately NOT used
+## Stories considered and left off the page
 
-- The Riemann-hypothesis Lean proof: released 20 Nov and certified
-  21 Nov, so it is not a 23 November story despite heavy 23 Nov
-  commentary.
-- Yesterday's stories (COP31 collapse, Hormuz tanker strikes, Dymer,
-  El Chapo Isidro, BepiColombo) are not repeated; the Cikande brief is
-  a genuinely new 23 Nov development and is drawn as a follow-up.
+- A Lean formalisation said to settle the Riemann hypothesis drew heavy
+  commentary on the Monday, but the proof itself was released on 20 Nov
+  and certified on 21 Nov, so it is not a story of the 23rd and was
+  excluded.
+- Sunday's running stories (the COP31 collapse, the Hormuz tanker
+  strikes, Dymer, El Chapo Isidro, BepiColombo) were not carried over.
+  The Cikande brief is the single exception, and only because the audit
+  order is a fresh decision taken on the Monday; on the page it is
+  drawn as a follow-up, not as new news.
